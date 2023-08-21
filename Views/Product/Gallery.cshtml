@@ -1,0 +1,82 @@
+﻿@model List<Product>
+
+@{
+    ViewData["Title"] = "Welcome to 7 SHOP";
+    
+    /* Checking Customer Login State */
+    ViewData["Username"] = Context.Session.GetString("Username");
+    if (ViewData["Username"] == null) ViewData["Username"] = "Guest User";
+    var search = ViewBag.search;
+}
+
+@section Scripts {
+    <script src="~/js/addToCart.js"></script>
+}
+
+<div class="d-flex justify-content-between align-items-center mt-5 mb-4">
+    <div class="head-txt">
+        <h2 class="fw-bolder d-inline-block">Welcome,</h2>
+        <h2 class="fw-bolder d-inline-block"> @ViewData["Username"]! </h2>
+    </div>
+    <form class="search-box" style="width:25rem;">
+        <i class="bi bi-search"></i>
+        <input type="text" name="search" class="form-control form-input w-100" placeholder="Search by title or keywords or description" value="@search">
+    </form>
+</div>
+
+<div id="gallery" class="gallery">
+    @if (search != null)
+        {
+            @if (Model.Count() == 0)
+            {
+                <p class="h2 mt-5 text-center">No items found for "@search" ☹️</p>
+                <p class="h3 text-center" style="font-size: 16px; width: 100%; text-align: center">We will try to update more!</p>
+            }
+            else
+            {
+                <p class="h5" style="text-transform: none">
+                    Returned @Model.Count() @((Model.Count() == 1 ? "result" : "results")) for "@search"
+                </p>
+            }
+        }
+    <div class="row">
+        @foreach (Product product in Model)
+        {
+            <div class="col-md-3 col-sm-6 d-flex align-items-stretch">
+                <div class="card mb-5">
+                    <img class="card-img-top" src=@product.ProductImageUrl alt="Card image cap">
+                    <div class="card-body d-flex flex-column">
+                        <p class="card-title h4 fw-bolder">@product.ProductName</p>
+                        <div class="d-flex justify-content-left small text-warning mb-2">
+                            @{
+                                int full_star = (int)product.ProductRating;
+                                bool half_star = product.ProductRating - full_star == 0.5;
+
+                                for (int star = 0; star < full_star; star++)
+                                {
+                                    <div class="bi-star-fill"></div>
+                                }
+                                if (half_star)
+                                {
+                                    <div class="bi-star-half"></div>
+                                }
+                                for (int empty_star = 0; empty_star < (int)(5 - product.ProductRating); empty_star++)
+                                {
+                                    <div class="bi-star"></div>
+                                }
+                            }
+                            <div class="ms-2">(@product.ProductReviewers)</div>
+                        </div>
+                        <p class=""> Price: $ @product.ProductPrice </p>
+                        <div class="card-desc">
+                            <p>
+                                @product.ProductDescription
+                            </p>
+                        </div>
+                        <button class="btn btn-addcart w-100 mt-auto" onclick="addToCart(@product.ProductId)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

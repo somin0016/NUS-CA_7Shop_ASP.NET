@@ -1,0 +1,6 @@
+bin/
+obj/
+.vs/
+.github/
+.DS_Store
+wwwroot/img/

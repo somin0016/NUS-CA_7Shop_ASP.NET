@@ -1,0 +1,92 @@
+﻿@model List<Product>
+@{
+    ViewData["Title"] = "View Cart";
+    float cartTotal = 0;
+}
+<div class="d-flex justify-content-between align-items-center mt-5 mb-4">
+    <div class="head-txt">
+        <h2 class="fw-bolder d-inline-block">@ViewData["Title"]</h2>
+    </div>
+</div>
+
+<div id="cart-list" class="cart-list">
+    @if (Model.Count() == 0)
+    {
+        <h2 class="title text-center" style="width: 100%;">
+            You have added....Nothing! ☹️
+        </h2>
+        <h3 id="date-time" style="font-size:16px; width: 100%; text-align: center"> Browse and add items to your cart!</h3>
+
+        <div class="text-center">
+            <a class="browse-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">
+                <i class="bi bi-arrow-left"></i>
+                Browse items
+            </a>
+        </div>
+    }
+    @foreach (var item in Model)
+    {
+        <div class="row py-4 border-bottom">
+            <div class="card col-8 px-0">
+                <div class="row g-0">
+                    <div class="col-md-3 order-1 order-md-1">
+                        <img class="img-fluid rounded-start" src="~/@item.ProductImageUrl" alt="Card image cap">
+                    </div>
+                    <div class="col-md-9 order-2 order-md-2">
+                        <div class="card-body pb-0">
+                            <p class="card-ttl h4 fw-bolder">@item.ProductName</p>
+                            <div class="card-desc">
+                                <p>
+                                    @item.ProductDescription
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-item-detail col-4 d-flex flex-column justify-content-between">
+                <div class="d-flex flex-column justify-content-between border" style="min-height:100%; background-color: #FFF; border-color: rgba(0,0,0,.125); border-radius: .25rem">
+                    <div class="d-flex flex-column p-3 justify-content-between h-100">
+                        <div class="price-tag">
+                            <p class="h5 d-inline-block fw-bolder">Price:</p>
+                            <span class="h5 item-price">$ @item.ProductPrice</span>
+                        </div>
+                        <div class="form-outline mb-3">
+                            <label for="quantity-input" class="h5 fw-bolder">Qty:</label>
+                            <input type="number" id="quantityInput-@item.ProductId" aria-label="quantity-input" data-productid="@item.ProductId" data-price="@item.ProductPrice" class="quantity-input form-control d-inline-block w-50" value="1" min="1" onchange="CartQtyUpdate(@item.ProductId)" />
+                        </div>
+                    </div>
+                    <div class="cart-delete w-100 border-top h-100" style="border-color: rgba(0,0,0,.125); text-align:center;">
+                        <form method="post" asp-controller="Home" asp-action="RemoveFromCart" asp-route-id="@item.ProductId" class="h-100">
+                            <button type="submit" class="btn btn-danger w-100">
+                                <i class="bi bi-trash"></i>
+                                <span>Remove from cart</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+@if (Model.Count() > 0)
+{
+    <div class="cart-detail row g-0">
+        <div class="d-flex flex-row justify-content-end py-4">
+            <p class="d-inline-block h3 fw-bolder me-3">Total</p>
+            <span id="cartTotal" class="h3" value="@cartTotal">$ @cartTotal </span>
+        </div>
+        <div class="cart-aciton-btn border-top d-flex flex-row justify-content-end py-4">
+            <a class="btn btn-secondary btn-ctn mx-2 d-flex align-items-center justify-content-center" asp-area="" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-arrow-left me-2"></i>
+                Continue Shopping
+            </a>
+            <button class="btn btn-checkout ms-2 w-25">
+                Checkout
+                <i class="bi bi-arrow-right ms-1"></i>
+            </button>
+        </div>
+    </div>
+}
+

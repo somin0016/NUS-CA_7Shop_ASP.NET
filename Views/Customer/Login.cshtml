@@ -1,0 +1,59 @@
+﻿@model Customer
+
+@{
+    Layout = null;
+    ViewData["Title"] = "Welcome to Seven Shop";
+}
+
+<html>
+    <head>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/login.css" />
+    </head>
+
+    <body>
+        <div class="login">
+        
+            <form class="login_form" method="post">
+                <div class="login_form_logo mb-2">
+                    7Shop
+                </div>
+                <div class="login_form_header mb-5 fw-bolder">
+                    Log in
+                </div>
+                @if (ViewBag.ErrorMsg != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @ViewBag.ErrorMsg
+                    </div>
+                }
+                <div class="login_form_field">
+                    <div class="input-form w-100">
+                        <label class="input">
+                            <input type="text" name="username" class="input-box" placeholder=" ">
+                            <span class="input-label">
+                                Username
+                            </span>
+                        </label>
+                    </div>
+                    <div class="input-form w-100">
+                        <label class="input">
+                            <input type="password" name="password" class="input-box" placeholder=" ">
+                            <span class="input-label">
+                                Password
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="btn-container mt-4">
+                    <div class="login_form_button">
+                        <button type="submit" class="btn login-btn">
+                            LOGIN
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

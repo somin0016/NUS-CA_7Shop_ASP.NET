@@ -1,0 +1,85 @@
+﻿@{
+    var cartQuantity = 0;
+    if (Context.Session.GetInt32("CartItemsCount") != null)
+    {
+        cartQuantity = Context.Session.GetInt32("CartItemsCount") ?? default(int);
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - ASP_Assignment</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/common.css" asp-append-version="true" />
+        @* BOOTSTRAP IMPORT *@
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        @* CSS IMPORTS *@
+        @RenderSection("CSS", required: false)
+        <link rel="stylesheet" href="~/ASP_Assignment.styles.css" asp-append-version="true" />
+
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                <a class="navbar-brand site-title" asp-area="" asp-controller="Product" asp-action="Index">7Shop</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="pick-link nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Home</a>
+                            </li>
+                        </ul>
+                        @if (ViewData["Username"] == "Guest User")
+                        {
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="pick-link nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Login">Login</a>
+                                </li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="pick-link nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">My Purchases</a>
+                                </li>
+                                <li class="nav-item">
+                                <a class="pick-link nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Logout">Logout</a>
+                                </li>
+                            </ul>
+                        }
+                        <form class="d-flex ml-3">
+                            <a class="btn btn-cart" asp-controller="ShoppingCart" asp-action="Index">
+                                <i class="bi-cart-fill me-1"></i>
+                                Cart
+                                <span id="cartQty" class="badge text-white ms-1 rounded-pill">
+                                    @cartQuantity
+                                </span>
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+</html>
+
